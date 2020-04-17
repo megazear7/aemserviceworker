@@ -13,10 +13,10 @@ public @interface SWConfig {
     String strategy();
 
     @Property(label = "Ignore depth", description = "Used for the 'localizedPrecache' strategy. This should be an integer containing the number of path segments that you want to ignore, starting from the root.")
-    int ignoreDepth();
+    int ignoreDepth() default 0;
 
     @Property(label = "Prefix depth", description = "Used for the 'localizedPrecache' strategy. This should be an integer containing the number of path segments that you want to use as a prefix, starting from the ignored depth. This value should be 1 or greater.")
-    int prefixDepth();
+    int prefixDepth() default 0;
 
     @Property(label = "Template", description = "The JS to use as a template when generating the service worker.")
     String template();

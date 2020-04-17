@@ -14,9 +14,6 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.servlet.Servlet;
-import static com.aemserviceworker.services.ServiceWorkerService.STRATEGY_CUSTOM;
-import static com.aemserviceworker.services.ServiceWorkerService.STRATEGY_LOCALIZED_PRECACHE;
-import static com.aemserviceworker.services.ServiceWorkerService.STRATEGY_PRECACHE;
 
 @Component(service=Servlet.class,
         property={
@@ -38,29 +35,10 @@ public class ContextualServiceWorkerServlet extends SlingAllMethodsServlet {
         SWConfig config = request.getResource().adaptTo(ConfigurationBuilder.class).as(SWConfig.class);
 
         try {
-            final String strategy = config.strategy();
-            String sw;
-
-            if (STRATEGY_PRECACHE.equals(strategy)) {
-                sw = serviceWorkerService.precacheSw(config);
-            } else if (STRATEGY_LOCALIZED_PRECACHE.equals(strategy)) {
-                sw = serviceWorkerService.localizedPrecacheSw(request.getResource().getPath(), config);
-            } else if (STRATEGY_CUSTOM.equals(strategy)) {
-                sw = serviceWorkerService.customSw(config);
-            } else {
-                throw new ContextualServiceWorkerServletException("Service worker config at " + request.getResource().getPath() + " had no strategy set");
-            }
-
             response.setContentType("text/javascript");
-            response.getWriter().write(sw);
+            response.getWriter().write(serviceWorkerService.getServiceWorker(config, request.getResource().getPath(), request.getResourceResolver()));
         } catch(Exception e) {
             LOG.error("ServiceWorkerServlet error", e);
-        }
-    }
-
-    public class ContextualServiceWorkerServletException extends RuntimeException {
-        public ContextualServiceWorkerServletException(String errorMessage) {
-            super(errorMessage);
         }
     }
 }

@@ -171,5 +171,12 @@
             <version>1.1.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.adobe.aem</groupId>
+            <artifactId>uber-jar</artifactId>
+            <version>6.5.0</version>
+            <classifier>apis</classifier>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
