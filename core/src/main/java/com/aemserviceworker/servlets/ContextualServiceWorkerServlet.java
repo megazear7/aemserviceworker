@@ -1,9 +1,9 @@
 package com.aemserviceworker.servlets;
 
 import com.aemserviceworker.config.SWConfig;
+import com.aemserviceworker.services.ServiceWorkerService;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import com.aemserviceworker.services.ServiceWorkerService;
 import org.apache.sling.api.servlets.HttpConstants;
 import org.apache.sling.api.servlets.ServletResolverConstants;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
