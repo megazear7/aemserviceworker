@@ -10,7 +10,7 @@ Either install the package to the CRX or install the project using the below com
 mvn clean install
 ```
 
-## Usage
+## Resource Based Usage
 
 Create a node under your content hierarchy with the following properties. This is your 'service worker resource'.
 
@@ -22,6 +22,18 @@ Let's assume that your node is at `/content/myapp/us/en/sw`. In your page JavaSc
 ```js
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/content/myapp/us/en/sw.js');
+}
+```
+
+## Context Aware Config Based Usage
+
+Create a context aware configuration with the appropriate properties as described below. The caconfig node should be `com.aemserviceworker.config.SWConfig`.
+
+Then request any content path with the `sw` selection and `js` extension in order to retrieve a server worker. Below is an example. Notice that the `sw` in the path is a selector, not a node. The benefit of this method is that you can inherit your service worker configurations using caconfigs and you do not need to manage nodes within your site hierarchy.
+
+```js
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/content/myapp/us/en.sw.js');
 }
 ```
 
@@ -47,8 +59,8 @@ This strategy is good if you want to configure the service worker once and use i
 If you are using the localized precache strategy you will also need to set the following properties:
 
 1. `version`: This should be the new version of the service worker.
-1. `startSegment`: This should be an integer containing the number of path segments that you want to ignore, starting from the root.
-1. `prefixLength`: This should be an integer containing the number of path segments that you want to use as a prefix, starting from the ignored depth. This value should be 1 or greater.
+1. `ignoreDepth`: This should be an integer containing the number of path segments that you want to ignore, starting from the root.
+1. `prefixDepth`: This should be an integer containing the number of path segments that you want to use as a prefix, starting from the ignored depth. This value should be 1 or greater.
 1. `prefixedFiles`: This should be a multi valued string property with urls that you want included in the precache. These files will be prefixed by the calculated prefix. This value should be 1 or greater.
 1. `files`: This should be a multi valued string property with the urls that you want included in the precache. These files will not be prefixed.
 
