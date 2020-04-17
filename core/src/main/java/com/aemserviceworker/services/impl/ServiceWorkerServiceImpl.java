@@ -16,9 +16,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component(service = ServiceWorkerService.class)
 public class ServiceWorkerServiceImpl implements ServiceWorkerService {
+    private static final Logger LOG = LoggerFactory.getLogger(ServiceWorkerServiceImpl.class);
     private static final String CONFIG_BORDER = "___";
     private static final String CONFIG_VERSION = "version";
     private static final String CONFIG_PRECACHE_FILES = "files";
@@ -174,10 +177,11 @@ public class ServiceWorkerServiceImpl implements ServiceWorkerService {
 
     @Override
     public String customSw(final String template, final Map<String, String> configMap) {
-        String sw = "";
+        String sw = template;
 
-        for (final String config : configMap.keySet()) {
-            sw = template.replace(config, configMap.get(config));
+        for (final String key : configMap.keySet()) {
+            sw = sw.replaceAll(key, configMap.get(key));
+            if (LOG.isDebugEnabled()) LOG.debug("Replacing " + key + " with + '" + configMap.get(key) + "' for result: " + sw);
         }
 
         return sw;
